@@ -1,20 +1,20 @@
 function r = sphdec(H, y, symbset, radius)
 %
 %  SPHDEC: sphere decoder for linear STBC
-%     
+%
 %  R = SPHDEC(H, Y, SYMBSET, RADIUS)
 %
 %  H:        equivalent channel matrix
 %  Y:        received signal vector
 %  SYMBSET:  constellation
 %  RADIUS:   search radius
-%  
+%
 %  author:  Xiaoyong Guo
 %  website: http://www.wordeazy.com
 %
-%  Goto to my website to download the C-MEX version 
+%  Goto to my website to download the C-MEX version
 %  of this program. Please Send BUG report to
-%              
+%
 %           guo.xiaoyong@gmail.com
 %
 %  COPYRIGHT (c) 2006-2009,  Xiaoyong Guo
@@ -22,7 +22,7 @@ function r = sphdec(H, y, symbset, radius)
 
 
 if nargin == 3
-    radius = realmax; 
+    radius = realmax;
 end
 
 if size(H, 1) < size(H, 2)
@@ -30,7 +30,7 @@ if size(H, 1) < size(H, 2)
 end
 
 [Q, R] = qr(H, 0);
-z = Q'*y;
+z = Q'*y; %'
 n = size(H,2);
 
 
