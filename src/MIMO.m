@@ -4,7 +4,7 @@
 clear all
 Nt = 2; % Tx Antenna
 Nr = 2; % Rx Antenna
-N_ch = 1e4;
+N_ch = 10;
 nb = 1;
 GrayLabeling=1;% PSK
 % mapPamQam =1; % QAM
@@ -63,7 +63,7 @@ MI_bf_bit_GAMP = zeros(length(SNRs),1);
 % MI_CM_MMSE_all = zeros(length(SNRs),1);
 
 % dmin_BPSK = zeros(length(SNRs),1);
- ber_siso_all = zeros(length(SNRs),1);
+ber_siso_all = zeros(length(SNRs),1);
 
 
 %% Main part
@@ -160,21 +160,21 @@ for iSNR=1:length(SNRs)
         % ZF rx
         
         %% SISO channel matrix
-%         n_SISO = 1/sqrt(2)*sqrt(noise_var)*(randn(1)+1i*randn(1));
-%         r_SISO = s_SISO + n_SISO;
-%        
-%         s_est_SISO = r_SISO;
-%         [rx_bits_siso_hard,rx_symbol_siso_hard] = hardDemapping(symlabel,QAM_Symbols,s_est_SISO);
-%         rx_bits_siso_hard_all(iCh,:) = rx_bits_siso_hard;
-%         rx_symbol_siso_hard_all(iCh,:)= rx_symbol_siso_hard;
-%         brrNr_siso = brrNr_siso + sum(sum(double(tx_SISO_bits~= rx_bits_siso_hard)));% sum of bit error
-%         symerrNr_siso = symerrNr_siso + sum(sum(double(s_SISO~= rx_symbol_siso_hard)));
-%         ber_siso(iSNR) = brrNr_siso/(nb*N_ch);
-%         ser_siso(iSNR) = symerrNr_siso/(N_ch);
-
-
-
-
+        %         n_SISO = 1/sqrt(2)*sqrt(noise_var)*(randn(1)+1i*randn(1));
+        %         r_SISO = s_SISO + n_SISO;
+        %
+        %         s_est_SISO = r_SISO;
+        %         [rx_bits_siso_hard,rx_symbol_siso_hard] = hardDemapping(symlabel,QAM_Symbols,s_est_SISO);
+        %         rx_bits_siso_hard_all(iCh,:) = rx_bits_siso_hard;
+        %         rx_symbol_siso_hard_all(iCh,:)= rx_symbol_siso_hard;
+        %         brrNr_siso = brrNr_siso + sum(sum(double(tx_SISO_bits~= rx_bits_siso_hard)));% sum of bit error
+        %         symerrNr_siso = symerrNr_siso + sum(sum(double(s_SISO~= rx_symbol_siso_hard)));
+        %         ber_siso(iSNR) = brrNr_siso/(nb*N_ch);
+        %         ser_siso(iSNR) = symerrNr_siso/(N_ch);
+        
+        
+        
+        
         %% ZF RECEIVER
         % harddemapping
         
@@ -237,15 +237,15 @@ for iSNR=1:length(SNRs)
         %  end
         
         %  if(rx_active(3))
-        % full ML
+%         full ML
         
-%         s_est_ml = ML_rx(r,H,QAM_Symbols);
-%         [rx_bits_ml,rx_symbol_ml] =hardDemapping(symlabel,QAM_Symbols,s_est_ml);
-%         rx_bits_ml_all((1+(iCh-1)*nb):(iCh*nb),:) =rx_bits_ml';
-%         rx_symbol_ml_all(iCh,:)=rx_symbol_ml;
-%         brrNr_ML = brrNr_ML + sum(sum(double((tx_bits~=rx_bits_ml))));
-%         symerrNr_ML=symerrNr_ML+sum(sum(double((s.'~=rx_symbol_ml))));
-%         %          end
+        s_est_ml = ML_rx(r,H,QAM_Symbols);
+        [rx_bits_ml,rx_symbol_ml] =hardDemapping(symlabel,QAM_Symbols,s_est_ml);
+        rx_bits_ml_all((1+(iCh-1)*nb):(iCh*nb),:) =rx_bits_ml';
+        rx_symbol_ml_all(iCh,:)=rx_symbol_ml;
+        brrNr_ML = brrNr_ML + sum(sum(double((tx_bits~=rx_bits_ml))));
+        symerrNr_ML=symerrNr_ML+sum(sum(double((s.'~=rx_symbol_ml))));
+        %          end
         %         {
         %            if (rx_active(2))
         %              ZForMMSE=1;
@@ -256,21 +256,21 @@ for iSNR=1:length(SNRs)
         %
         
         
-%         % APP
-%         LLR_full_APP_vec = softDemapping(symlabel,QAM_Symbols,r,noise_var,2,H,0);
-%         LLR_full_APP = reshape(LLR_full_APP_vec,[nb Nt]);
-%         LLR_full_APP_all((1+(iCh-1)*nb):(iCh*nb),:) =LLR_full_APP;
-%         rx_bits_app_hard  =((LLR_full_APP>0)+0)';
-%         rx_bits_full_APP_all((1+(iCh-1)*nb):(iCh*nb),:) =rx_bits_app_hard';
-%         brrNr_fullAPP = brrNr_fullAPP + sum(sum(double((tx_bits~=rx_bits_app_hard))));
+        % APP
+        LLR_full_APP_vec = softDemapping(symlabel,QAM_Symbols,r,noise_var,2,H,0);
+        LLR_full_APP = reshape(LLR_full_APP_vec,[nb Nt]);
+        LLR_full_APP_all((1+(iCh-1)*nb):(iCh*nb),:) =LLR_full_APP;
+        rx_bits_app_hard  =((LLR_full_APP>0)+0)';
+        rx_bits_full_APP_all((1+(iCh-1)*nb):(iCh*nb),:) =rx_bits_app_hard';
+        brrNr_fullAPP = brrNr_fullAPP + sum(sum(double((tx_bits~=rx_bits_app_hard))));
         
-        % ML softdemapping
+        %         ML softdemapping
         
-%         LLR_ml_bits = softDemapping(symlabel,QAM_Symbols,s_est_zf,noise_var,algorithm,channel_weight,La);
-%         LLR_ml_bits_all((1+(iCh-1)*nb):(iCh*nb),:) = LLR_ml_bits;
-%         rx_bits_ml_llr_hard =((LLR_ml_bits>0)+0)';
-%         rx_bits_ml_llr_hard_all((1+(iCh-1)*nb):(iCh*nb),:) = rx_bits_ml_llr_hard';
-%         brrNr_ml_soft = brrNr_ml_soft + sum(sum(double((tx_bits~=rx_bits_ml_llr_hard))));
+        LLR_ml_bits = softDemapping(symlabel,QAM_Symbols,s_est_zf,noise_var,algorithm,channel_weight,La);
+        LLR_ml_bits_all((1+(iCh-1)*nb):(iCh*nb),:) = LLR_ml_bits;
+        rx_bits_ml_llr_hard =((LLR_ml_bits>0)+0)';
+        rx_bits_ml_llr_hard_all((1+(iCh-1)*nb):(iCh*nb),:) = rx_bits_ml_llr_hard';
+        brrNr_ml_soft = brrNr_ml_soft + sum(sum(double((tx_bits~=rx_bits_ml_llr_hard))));
         % SIC
         
         [rx_symbol_sic_hard,~,rx_bits_sic_hard] = mimoSICrx(H,r,noise_var,ZForMMSE,ordering,QAM_Symbols,symlabel);
@@ -297,11 +297,11 @@ for iSNR=1:length(SNRs)
         %     brrNr_BF_MRF  = brrNr_BF_MRF (:,:); %½µÎ¬
         %     semilogy(1:Niter+1,ber_BF_MRF (1,:)),
         
-%        Gaussian Approximation Message Passing
-                LLR_BF_GAMP = mimo_BP_GAMP_detector(r,H,noise_var,QAM_Symbols,symlabel,Niter);
-                rx_bits_bf_GAMP = logical((1+sign(LLR_BF_GAMP(:,:,Niter+1)))/2);
-                rx_bits_bf_GAMP_all((1+(iCh-1)*nb):(iCh*nb),:) = rx_bits_bf_Gaus';
-                brrNr_BF_GAMP = brrNr_BF_GAMP + sum(sum(double((tx_bits~= rx_bits_bf_GAMP))));
+        %        Gaussian Approximation Message Passing
+        %                 LLR_BF_GAMP = mimo_BP_GAMP_detector(r,H,noise_var,QAM_Symbols,symlabel,Niter);
+        %                 rx_bits_bf_GAMP = logical((1+sign(LLR_BF_GAMP(:,:,Niter+1)))/2);
+        %                 rx_bits_bf_GAMP_all((1+(iCh-1)*nb):(iCh*nb),:) = rx_bits_bf_Gaus';
+        %                 brrNr_BF_GAMP = brrNr_BF_GAMP + sum(sum(double((tx_bits~= rx_bits_bf_GAMP))));
         
         
         iCh
@@ -335,7 +335,7 @@ for iSNR=1:length(SNRs)
         
         % MI_bf_bit_GAMP(iSNR) = MI_bf_bit_MRF(iSNR) + getMutualInformationHardInput(tx_bits_all(:,iStream), rx_bits_bf_GAMP_all(:,iStream),nb);
     end
-  
+    
     
     ber_zf(iSNR) = brrNr_ZF/(nb*Nt*N_ch);
     ber_zf_soft(iSNR) = brrNr_zf_soft/(nb*Nt*N_ch);
@@ -361,11 +361,11 @@ for iSNR=1:length(SNRs)
 end
 save('data.mat','ber_siso','ber_zf','ber_zf_soft','ber_sphere','ber_mmse','ber_mmse_soft','ber_ml','ber_full_App','ber_sic','ber_BF_MRF', 'MI_zf_bit_hard','MI_zf_soft_all','MI_ml','MI_mmse_hard','MI_mmse_soft_scaled_all','MI_full_App','MI_sic_hard','MI_sphere_hard','MI_bf_bit_MRF');
 
-grid on;
-title('bit error rate');
-figure(1);
-hold on;
-loglog(SNRs,ber_siso_all,'*-','LineWidth',1.5),
+% grid on;
+% title('bit error rate');
+% figure(1);
+% hold on;
+% loglog(SNRs,ber_siso_all,'*-','LineWidth',1.5),
 % loglog(SNRs,ber_zf),
 % loglog(SNRs,ber_zf_soft,'--'),
 % loglog(SNRs,ber_mmse),
@@ -375,12 +375,12 @@ loglog(SNRs,ber_siso_all,'*-','LineWidth',1.5),
 % loglog(SNRs,ber_sphere),
 % loglog(SNRs,ber_full_App),
 % loglog(SNRs,ber_BF_MRF),
-xlabel('SNR/dB'),ylabel('bit error rate'),
- %legend('SISO','ZF','ZF Soft','MMSE hard','MMSE soft','ML','SIC','Sphere detection','fullApp','BF MRF');
-  legend('SISO');
-
-figure(2);
-hold on;
+% xlabel('SNR/dB'),ylabel('bit error rate'),
+%legend('SISO','ZF','ZF Soft','MMSE hard','MMSE soft','ML','SIC','Sphere detection','fullApp','BF MRF');
+% legend('SISO');
+% 
+% figure(2);
+% hold on;
 
 % semilogx(SNRs, MI_zf_bit_hard),
 % semilogx(SNRs, MI_zf_soft_all,'--'),
