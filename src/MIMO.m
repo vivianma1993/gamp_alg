@@ -6,8 +6,8 @@ clear all
 % some configuration for debuging
 ON = true;
 OFF = false;
-DEBUG = ON;
-OUTPUT = OFF;
+DEBUG = OFF;
+OUTPUT = ON;
 
 % ------------------------------------------------------------------------------
 % global variables
@@ -398,6 +398,7 @@ if OUTPUT
 	% legend('SISO');
 
 	figure(2);
+	grid on;
 	hold on;
 	semilogx(SNRs, MI_zf_bit_hard),
 	semilogx(SNRs, MI_zf_soft_all,'--'),

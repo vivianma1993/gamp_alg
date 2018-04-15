@@ -1,11 +1,11 @@
 function [m, l] = get_mapping_and_labeling(nb,labeling,mapPamQam)
-	% QAM/PAM/PSK Mapper
-	% Inputs:  - nb: number of bits per symbol
-	%          - labeling: Gray, anti-Gray, natural, random
-	%          - mapPamQam: PAM/QAM/PSK
-	%          - labArray: data index
-	% Outputs: m : the bits
-	%          l : the symbols
+% QAM/PAM/PSK Mapper
+% Inputs:  - nb: number of bits per symbol
+%          - labeling: Gray, anti-Gray, natural, random
+%          - mapPamQam: PAM/QAM/PSK
+%          - labArray: data index
+% Outputs: m : the bits
+%          l : the symbols
 
 	if( nb == 1 )
 		m = [0, 1]; % Gray, anti-Gray, natural, random

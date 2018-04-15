@@ -1,4 +1,22 @@
- function[LLRs] = mimo_BP_MRF_detector_v02(y,H_channel,noise_var,const_pointsSymbol,const_pointsLabel,Niter,DampingFactor)
+function[LLRs] = mimo_BP_MRF_detector_v02(y,H_channel,noise_var,const_pointsSymbol,const_pointsLabel,Niter,DampingFactor)
+% name:
+%		mimo_BP_MRF_detector_v02
+%
+% describe:
+%		Markov random field
+%
+% Inputs:
+%		- y:
+%		- H_channel:
+%		- noise_var:
+%		- const_pointsSymbol:
+%		- const_pointsLabel:
+%		- Niter:
+%		- DampingFactor:
+%
+% Outputs:
+%		- LLRs:
+
 	% BP detector based Markov Random Field
 	[Nr,Nt] = size(H_channel);
 	n_VN = Nt;
