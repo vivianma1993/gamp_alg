@@ -63,14 +63,17 @@
                     if (i == j)
                         continue;
                     end
-                    in_msg{size(in_msg,1)+1,1} = FN.inbound_msg{j};
+                    in_msg{size(in_msg,1)+1,1} = FN.inbound_msg{j}; % 将新的msg起来
+                    %FN 接收到两个信息 但选择第二个传给VN1
                     fm_id = [fm_id; FN.link_id(j)];
+                    % for 2x2 MIMO 第一个循环计算第二个VN传给第一个VN的信息
                 end % for j = ...
                 % execute factor function
                 snd_msg = FN.factor_fun(in_msg, fm_id, FN.link_id(i),default_msg);
+                %计算反传给VN的msg VN按顺序传
                 % send message
-                FN.linklist{i}.rx_msg(FN, snd_msg);
-                % update outbound record
+                FN.linklist{i}.rx_msg(FN, snd_msg); %将FN 传送的信息放入 VN 的rx_msg
+                % update outbound record ？？
                 k = find(FN.to_id == FN.from_id(i));
                 if i~=k
                     disp('i not equal to k');
@@ -80,36 +83,20 @@
                 FN.outbound_msg{i} = snd_msg;
             end % for i = ...
         end %function update_node
-
-
-
-
-
-
-
+        
+        
+        
     end % method
     
     methods (Access = protected)
-        function rx_msg(FN, from_node, msg)
-            s = FN;            
+        function rx_msg(FN, from_node, msg) % from_node为VN
+            s = FN; % s 为FN
             from_nodeID = from_node.id;
             from_nodeIndx = find(s.link_id == from_nodeID);
             s.from_node{from_nodeIndx} = from_node;
             s.inbound_msg{from_nodeIndx} = msg;
             s.from_id(from_nodeIndx) = [from_node.id];
             
-            
-%                         tmp_msg = 0.00001;
-%             for i = 1:size(FN.linklist,2)
-%                 if eq(FN.linklist{i},from_node)
-%                     FN.inbound_msg{i} = msg;
-%                 elseif isempty(FN.inbound_msg{i})
-%                     FN.inbound_msg{i} = tmp_msg;
-%                 end
-%             end
-%             FN.from_node{1,size(FN.from_node,2)+1} = from_node;
-%             FN.inbound_msg{size(FN.inbound_msg,1)+1,1} = msg;
-%             FN.from_id = [FN.from_id from_node.id];
-        end % function rx_msg        
+        end % function rx_msg
     end % methods
 end

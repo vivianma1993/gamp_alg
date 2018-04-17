@@ -11,8 +11,8 @@ OUTPUT = ON;
 
 % ------------------------------------------------------------------------------
 % global variables
-Nt = 2; % Tx Antenna
-Nr = 2; % Rx Antenna
+Nt = 4; % Tx Antenna
+Nr = 4; % Rx Antenna
 N_ch = 10;
 nb = 1;
 GrayLabeling=1; % PSK

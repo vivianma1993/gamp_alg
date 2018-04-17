@@ -82,12 +82,12 @@ classdef MotherNode_GAMP < handle
     end
     
     methods (Access = protected)
-        function rx_msg(FN, from_node, msg)
+        function rx_msg(FN, from_node, msg_VN,est_x) %??
             s = FN;            
             from_nodeID = from_node.id;
             from_nodeIndx = find(s.link_id == from_nodeID);
             s.from_node{from_nodeIndx} = from_node;
-            s.inbound_msg{from_nodeIndx} = msg;
+            s.inbound_msg{from_nodeIndx} = msg_VN;
             s.from_id(from_nodeIndx) = [from_node.id];
             
  
