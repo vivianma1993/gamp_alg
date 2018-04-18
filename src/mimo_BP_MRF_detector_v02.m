@@ -6,17 +6,18 @@ function[LLRs] = mimo_BP_MRF_detector_v02(y,H_channel,noise_var,const_pointsSymb
 %		Markov random field
 %
 % Inputs:
-%		- y:
-%		- H_channel:
-%		- noise_var:
-%		- const_pointsSymbol:
-%		- const_pointsLabel:
-%		- Niter:
-%		- DampingFactor:
+%		- y: r,
+%		- H_channel: H,
+%		- noise_var: noise_var,
+%		- const_pointsSymbol: QAM_Symbols,
+%		- const_pointsLabel: symlabel,
+%		- Niter: Niter,
+%		- DampingFactor: 0.2
 %
 % Outputs:
 %		- LLRs:
 
+	y,H_channel,noise_var,const_pointsSymbol,const_pointsLabel,Niter,DampingFactor
 	% BP detector based Markov Random Field
 	[Nr,Nt] = size(H_channel);
 	n_VN = Nt;
@@ -52,11 +53,11 @@ function[LLRs] = mimo_BP_MRF_detector_v02(y,H_channel,noise_var,const_pointsSymb
 	end
 
 	% --------------------------------------------------------------------------
-	%setup intial message = 0.5
+	% setup intial message = 0.5
 	Pa = 0.5;
 	La = log(Pa/(1-Pa));
-	y_MF = H_channel'*y/noise_var; %'
-	R_cov = H_channel'*H_channel/noise_var; %'
+	y_MF = H_channel' * y / noise_var; %' z
+	R_cov = H_channel' * H_channel / noise_var; %'
 	% channel_weight = diag(R_cov);
 	% algorithm = 2;
 	% initMsg = La + softDemappingSISO(const_pointsLabel,const_pointsSymbol,y_MF,noise_var,algorithm,channel_weight,La);
@@ -87,7 +88,7 @@ function[LLRs] = mimo_BP_MRF_detector_v02(y,H_channel,noise_var,const_pointsSymb
 	end
 
 	% --------------------------------------------------------------------------
-	%setup first block of receive signal
+	% setup first block of receive signal
 	% for  iFN = 1:n_FN
 	%     FN{iFN}.ReceivedSignal = {};
 	% end
@@ -96,7 +97,7 @@ function[LLRs] = mimo_BP_MRF_detector_v02(y,H_channel,noise_var,const_pointsSymb
 	message_old = zeros(n_VN-1,nb,n_VN);
 	for iter = 1:Niter
 		% ----------------------------------------------------------------------
-		%Update Function node
+		% Update Function node
 		for Ln = 1:n_FN
 			FN{Ln}.update_node({R_cov,noise_var,const_pointsSymbol,const_pointsLabel});
 		end
@@ -124,13 +125,13 @@ function[LLRs] = mimo_BP_MRF_detector_v02(y,H_channel,noise_var,const_pointsSymb
 		end
 
 		% ----------------------------------------------------------------------
-		%update variable node
+		% update variable node
 		for Ln = 1:n_VN
 			VN{Ln}.update_node({y_MF,noise_var,const_pointsSymbol,const_pointsLabel});
 		end
 
 		% ----------------------------------------------------------------------
-		%SaveLLR for each iteration
+		% SaveLLR for each iteration
 		for nVN = 1:n_VN
 			message_old(:,:,nVN) = cell2mat(VN{nVN}.inbound_msg);
 			LLRs(nVN,:,iter+1) = initMsg(nVN,:)+ sum(cell2mat(VN{nVN}.inbound_msg));

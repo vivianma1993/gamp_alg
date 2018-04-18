@@ -6,8 +6,9 @@ clear all
 % some configuration for debuging
 ON = true;
 OFF = false;
-DEBUG = OFF;
-OUTPUT = ON;
+DEBUG = ON;
+OUTPUT = OFF;
+TEST = ON;
 
 % ------------------------------------------------------------------------------
 % global variables
@@ -142,7 +143,7 @@ for iSNR=1:length(SNRs)
 
 	% --------------------------------------------------------------------------
 	% one SNR value corresponding to 1e4 times sending
-	for iCh=1:N_ch
+	for iCh = 1:N_ch
 		% symbol generation MIMO
 		%       sym_idx = randi(4,Nt,1) -1; % generate QPSK symbols 4 symbol from 0 to 3
 		sym_idx = randi(2,Nt,1) -1;
@@ -299,6 +300,11 @@ for iSNR=1:length(SNRs)
 		% belief propagation
 		% Markov random field
 		LLR_BF_MRF = mimo_BP_MRF_detector_v02(r,H,noise_var,QAM_Symbols,symlabel,Niter,0.2);
+		if TEST
+			% r,H,noise_var,QAM_Symbols,symlabel,Niter,0.2
+			LLR_BF_MRF
+			TEST = OFF;
+		end
 		rx_bits_bf_hard = logical((1+sign(LLR_BF_MRF(:,:,Niter+1)))/2);
 		rx_bits_bf_hard_all((1+(iCh-1)*nb):(iCh*nb),:) = rx_bits_bf_hard'; %'
 		brrNr_BF_MRF = brrNr_BF_MRF + sum(sum(double((tx_bits~= rx_bits_bf_hard))));
@@ -312,9 +318,6 @@ for iSNR=1:length(SNRs)
 		rx_bits_bf_GAMP_all((1+(iCh-1)*nb):(iCh*nb),:) = rx_bits_bf_Gaus'; %'
 		brrNr_BF_GAMP = brrNr_BF_GAMP + sum(sum(double((tx_bits~= rx_bits_bf_GAMP))));
 
-		if DEBUG
-			iCh
-		end
 	end
 
 	% --------------------------------------------------------------------------

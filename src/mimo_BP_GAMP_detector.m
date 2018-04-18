@@ -1,5 +1,28 @@
 function[LLRs] = mimo_BP_GAMP_detector(y,H_channel,noise_var,const_pointsSymbol,const_pointsLabel,Niter)
 % BP detector based Markov Random Field
+%   1. miu_z_i_k <- sum(h_i_j * E_x_i)
+%   2. o_z_i_k <- sum(|h_i_j|^2 Var(x_j)) + o^2
+%   3. v_i_k <- 4/o_z_i_k^2 * R(h_i_k* (y_i - miu_z_i_k))
+%   4. p_i_k_plus <- exp( sum(l!=i v_l_k) ) / ( 1+ exp( sum(l!=i v_l_k) ))
+%
+% Inputs:
+%   x: s
+%   y: r
+%   H_channel: H_channel
+%   E: 0
+%   ni: n
+%   o: noise_var
+% -----------------------------
+%   y,
+%   H_channel,
+%   noise_var,
+%   const_pointsSymbol,
+%   const_pointsLabel,
+%   Niter
+%
+% Outputs:
+%   xxxxx
+%
 
     [Nr,Nt] = size(H_channel);
     n_VN = Nt;
