@@ -307,10 +307,10 @@ for iSNR=1:length(SNRs)
 
 		% ----------------------------------------------------------------------
 		% Gaussian Approximation Message Passing
-		% LLR_BF_GAMP = mimo_BP_GAMP_detector(r,H,noise_var,QAM_Symbols,symlabel,Niter);
-		% rx_bits_bf_GAMP = logical((1+sign(LLR_BF_GAMP(:,:,Niter+1)))/2);
-		% rx_bits_bf_GAMP_all((1+(iCh-1)*nb):(iCh*nb),:) = rx_bits_bf_Gaus'; %'
-		% brrNr_BF_GAMP = brrNr_BF_GAMP + sum(sum(double((tx_bits~= rx_bits_bf_GAMP))));
+		LLR_BF_GAMP = mimo_BP_GAMP_detector(r,H,noise_var,QAM_Symbols,symlabel,Niter);
+		rx_bits_bf_GAMP = logical((1+sign(LLR_BF_GAMP(:,:,Niter+1)))/2);
+		rx_bits_bf_GAMP_all((1+(iCh-1)*nb):(iCh*nb),:) = rx_bits_bf_Gaus'; %'
+		brrNr_BF_GAMP = brrNr_BF_GAMP + sum(sum(double((tx_bits~= rx_bits_bf_GAMP))));
 
 		if DEBUG
 			iCh

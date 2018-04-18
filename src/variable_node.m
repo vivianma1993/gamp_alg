@@ -1,17 +1,17 @@
 classdef variable_node < MotherNode
-    
+
     properties % class当中的公共属性
         init_msg
         ReceivedSignal
     end
-    
+
     methods
         function s = variable_node(id)
             s = s@MotherNode(id);
             s.init_msg = {};
             s.ReceivedSignal = {};
         end
-        
+
         function setup_init_msg(s, msg) % 把VN初始化的数值传进来 此处S为VN
             if size(msg,1) ~= 1 % 保证初始化数据是个行向量
                 sprintf('Node %0.0f ERROR from setup_init_msg: message must be row vector !!!\n',s.id)
@@ -25,15 +25,15 @@ classdef variable_node < MotherNode
                     s.to_node{linkNo} = s.linklist{linkNo};
                     s.outbound_msg{linkNo} = snd_msg; % VN outboundmsg
                     s.to_id(linkNo) = [s.linklist{linkNo}.id];
-                end                
+                end
             end
         end
-        
+
         function reset(s)
             reset@MotherNode(s);
             s.init_msg = {};
         end
-        
+
         function msg = factor_fun(s, in_msg, from_id, to_id,default_msg)
             if(~isempty(in_msg))
                 msg = s.init_msg{1};
@@ -45,13 +45,13 @@ classdef variable_node < MotherNode
             else
                 msg=s.init_msg{1};
             end
-            
+
         end
     end
-    
-    methods (Access = protected) 
-        %确认哪些代码可以调用此方法 protected - 从类或子类的方法进行访问
-        function rx_msg(s, from_node, msg) % S是VN 
+
+    methods (Access = protected)
+        % 确认哪些代码可以调用此方法 protected - 从类或子类的方法进行访问
+        function rx_msg(s, from_node, msg) % S是VN
             from_nodeID = from_node.id;
             from_nodeIndx = find(s.link_id == from_nodeID);
             % s.link_id from_node.id 是与VN 相连的FN 的id

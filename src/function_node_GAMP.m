@@ -1,12 +1,12 @@
 classdef function_node_GAMP < MotherNode_GAMP
-    %FUNCTION_NODE_GAMP ´Ë´¦ÏÔÊ¾ÓÐ¹Ø´ËÀàµÄÕªÒª
-    %   ´Ë´¦ÏÔÊ¾ÏêÏ¸ËµÃ÷
-    
+    % FUNCTION_NODE_GAMP æ­¤å¤„æ˜¾ç¤ºæœ‰å…³æ­¤ç±»çš„æ‘˜è¦
+    %   æ­¤å¤„æ˜¾ç¤ºè¯¦ç»†è¯´æ˜Ž
+
     properties
         init_msg
         ReceivedSignal
     end
-    
+
     methods
         function s = function_node_GAMP(id)
             s = s@MotherNode_GAMP(id);
@@ -29,7 +29,7 @@ classdef function_node_GAMP < MotherNode_GAMP
             mean = zeros(n_FN,n_VN);
             var_x = ones (n_VN,1);
             var_GAMP = ones (n_FN,n_VN);
-            
+
             for i = 1 : n_FN
                 for j = 1: n_VN
                     for k = 1:n_FN
@@ -47,7 +47,6 @@ classdef function_node_GAMP < MotherNode_GAMP
                 end
             end
         end
+
     end
 end
-
-
