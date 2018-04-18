@@ -13,6 +13,7 @@ classdef variable_node_GAMP < MotherNode_GAMP
 
     methods
         function s = variable_node_GAMP(id, vn, fn)
+            disp("variable_node_GAMP ---")
             s = s@MotherNode_GAMP(id);
             s.msg_VN = {};
             s.ReceivedSignal = {};

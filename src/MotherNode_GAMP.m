@@ -9,11 +9,11 @@ classdef MotherNode_GAMP < handle
        from_id        % from id, 1xn array
        outbound_msg   % outbound message nx1 cell array
        to_node        % to node, nx1 cell array
-       to_id          % to id, 1xn array             
+       to_id          % to id, 1xn array
     end
-    
+
     methods
-        function FN = MotherNode_GAMP(id) % constructor  结构体  
+        function FN = MotherNode_GAMP(id) % constructor
            % constructor
            FN.id = id;
            FN.linklist = {};
@@ -24,7 +24,7 @@ classdef MotherNode_GAMP < handle
            FN.from_id = [];
            FN.to_id = [];
         end
-        
+
         function reset(FN)
             % reset properties
             FN.inbound_msg = {};
@@ -34,15 +34,15 @@ classdef MotherNode_GAMP < handle
             FN.from_id = [];
             FN.to_id = [];
         end
-        
+
         function setup_link(FN,linklist)
             % update linklist
             FN.linklist = linklist;
             FN.link_id = [];
             for i = 1:size(linklist,2)
-                FN.link_id = [FN.link_id linklist{i}.id]; % linklist 描述的是与同一个FN有关系的VN列表
+                FN.link_id = [FN.link_id linklist{i}.id]; % linklist FN
             end
-            FN.inbound_msg = {}; % FN 输入信息
+            FN.inbound_msg = {}; % FN
             for i = 1:size(FN.linklist,2)
                 FN.inbound_msg{i,1} = [];
                 FN.outbound_msg{i,1} = [];
@@ -50,12 +50,13 @@ classdef MotherNode_GAMP < handle
             FN.to_node = FN.linklist;
             FN.from_node = FN.linklist;
             FN.to_id = FN.link_id;
-            FN.from_id = FN.link_id;            
+            FN.from_id = FN.link_id;
         end
-        
+
         function update_node(FN, default_msg)
             for i = 1:size(FN.linklist,2)
                 % i is the destination of message
+
                 % collect all message except from i
                 in_msg = {}; fm_id = [];
                 for j = 1:size(FN.linklist,2)
@@ -65,10 +66,13 @@ classdef MotherNode_GAMP < handle
                     in_msg{size(in_msg,1)+1,1} = FN.inbound_msg{j};
                     fm_id = [fm_id; FN.link_id(j)];
                 end % for j = ...
+
                 % execute factor function
-                snd_msg = FN.factor_fun(in_msg, fm_id, FN.link_id(i),default_msg);
+                snd_msg = FN.factor_fun(in_msg, fm_id, FN.link_id(i), default_msg);
+
                 % send message
                 FN.linklist{i}.rx_msg(FN, snd_msg);
+
                 % update outbound record
                 k = find(FN.to_id == FN.from_id(i));
                 if i~=k
@@ -80,17 +84,17 @@ classdef MotherNode_GAMP < handle
             end % for i = ...
         end %function update_node
     end
-    
+
     methods (Access = protected)
-        function rx_msg(FN, from_node, msg_VN,est_x) %??
-            s = FN;            
+        function rx_msg(FN, from_node, msg_VN,est_x)
+            s = FN;
             from_nodeID = from_node.id;
             from_nodeIndx = find(s.link_id == from_nodeID);
             s.from_node{from_nodeIndx} = from_node;
             s.inbound_msg{from_nodeIndx} = msg_VN;
             s.from_id(from_nodeIndx) = [from_node.id];
-            
- 
-        end % function rx_msg        
+
+
+        end % function rx_msg
     end % methods
 end

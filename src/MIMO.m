@@ -302,7 +302,7 @@ for iSNR=1:length(SNRs)
 		LLR_BF_MRF = mimo_BP_MRF_detector_v02(r,H,noise_var,QAM_Symbols,symlabel,Niter,0.2);
 		if TEST
 			% r,H,noise_var,QAM_Symbols,symlabel,Niter,0.2
-			LLR_BF_MRF
+			disp(LLR_BF_MRF);
 			TEST = OFF;
 		end
 		rx_bits_bf_hard = logical((1+sign(LLR_BF_MRF(:,:,Niter+1)))/2);

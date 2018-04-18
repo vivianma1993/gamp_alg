@@ -22,7 +22,7 @@ function[LLRs] = mimo_BP_MRF_detector(y,H_channel,noise_var,const_pointsSymbol,c
 
     % create variable nodes
     for iVN = 1:n_VN
-        VN{iVN,:} =  variable_node_GAMP(iVN, n_VN, n_FN);
+    	VN{iVN,:} =  variable_node_GAMP(iVN, n_VN, n_FN);
     end
 
     % create Function nodes
