@@ -1,5 +1,8 @@
 # gamp_alg
-This codepakage is related to the topic,Message Passing Algorithm (MPA) , a.k.a. Belief Propagation (BP) detection,
+This codepakage is related to the topic,Message Passing Algorithm (MPA) 
+
+Abstract of Article of MPA 
+ Messgae passing Algorithm a.k.a. Belief Propagation (BP) detection,
 is used to achieve near-optimal detection in large-Multiple Input Multiple Output (MIMO)
 systems equipped with both larger numer of transmit and receive antennas at low complexities.
 These large- systems can be flexibly deployed for the purpose of wireless back-hauling.
